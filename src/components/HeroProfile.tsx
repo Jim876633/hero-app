@@ -4,94 +4,237 @@ import { STATS } from "../constant";
 import { useUpdateHeroProfile } from "../hooks/useHeroProfile";
 import type { HeroProfileType } from "../types/hero";
 
+const ProfileLayout = styled.div`
+  display: flex;
+  gap: 30px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+  }
+`;
+
+const StatsSection = styled.div`
+  flex: 2;
+  display: flex;
+  width: 100%;
+  gap: 10px;
+  flex-direction: column;
+  justify-content: space-between;
+`;
+
+const HeroInfoSection = styled.div`
+  display: flex;
+  flex: 1;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+`;
+
+const HeroImage = styled.img`
+  width: 100%;
+  height: 200px;
+  border-radius: 12px;
+  border: 3px solid ${(props) => props.theme.colors.primary.gold};
+  box-shadow:
+    0 8px 30px ${(props) => props.theme.colors.shadow.goldLight},
+    inset 0 1px 0 ${(props) => props.theme.colors.shadow.goldInsetLight};
+  object-fit: cover;
+`;
+
+const HeroName = styled.h3`
+  margin: 0;
+  font-size: 24px;
+  color: ${(props) => props.theme.colors.text.gold};
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-align: center;
+  text-shadow:
+    0 0 20px ${(props) => props.theme.colors.shadow.gold},
+    0 2px 4px ${(props) => props.theme.colors.shadow.black};
+  font-family: ${(props) => props.theme.fonts.body};
+  font-weight: 700;
+`;
+
+const ActionSection = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`;
+
 const StatRow = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 16px;
+  padding: 12px;
+  background: ${(props) => props.theme.gradients.stat.row};
+  border-left: 3px solid ${(props) => props.theme.colors.border.brown};
+  border-radius: 6px;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: ${(props) => props.theme.gradients.stat.rowHover};
+    border-left-color: ${(props) => props.theme.colors.primary.gold};
+  }
 `;
 
 const StatLabel = styled.div`
-  font-weight: 600;
+  font-weight: 700;
   text-transform: uppercase;
-  width: 80px;
+  min-width: 50px;
+  color: ${(props) => props.theme.colors.text.gold};
+  letter-spacing: 1.5px;
+  font-size: 14px;
+  text-shadow: 0 2px 4px ${(props) => props.theme.colors.shadow.black};
 `;
 
 const StatControls = styled.div`
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
 `;
 
 const StatButton = styled.button`
-  width: 36px;
-  height: 36px;
-  border: 1px solid #666;
-  background-color: #fff;
-  border-radius: 4px;
-  font-size: 18px;
-  color: #333;
+  width: 40px;
+  height: 40px;
+  border: 2px solid ${(props) => props.theme.colors.border.brown};
+  background: ${(props) => props.theme.gradients.button.dark};
+  border-radius: 6px;
+  font-size: 20px;
+  font-weight: bold;
+  color: ${(props) => props.theme.colors.text.gold};
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s ease;
+  box-shadow:
+    0 2px 8px ${(props) => props.theme.colors.shadow.blackDark},
+    inset 0 1px 0 ${(props) => props.theme.colors.shadow.whiteVeryLight};
 
   &:hover:not(:disabled) {
-    background-color: #f0f0f0;
+    background: ${(props) => props.theme.gradients.button.darkHover};
+    border-color: ${(props) => props.theme.colors.primary.gold};
+    box-shadow:
+      0 4px 15px ${(props) => props.theme.colors.shadow.goldLight},
+      inset 0 1px 0 ${(props) => props.theme.colors.shadow.goldInsetLight};
+    transform: translateY(-2px);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
   }
 
   &:disabled {
     opacity: 0.3;
     cursor: not-allowed;
+    border-color: ${(props) => props.theme.colors.background.lightBrown};
   }
 `;
 
 const StatValue = styled.div`
-  width: 40px;
+  min-width: 50px;
   text-align: center;
-  font-size: 18px;
+  font-size: 22px;
+  font-weight: 700;
+  color: ${(props) => props.theme.colors.text.gold};
+  text-shadow: 0 0 10px ${(props) => props.theme.colors.shadow.gold};
 `;
 
 const PointsRemaining = styled.div`
-  margin: 24px 0;
   font-size: 18px;
-  text-align: right;
+  text-align: center;
+  color: ${(props) => props.theme.colors.text.gold};
+  font-weight: 700;
+  text-shadow: 0 0 10px ${(props) => props.theme.colors.shadow.gold};
+  letter-spacing: 1px;
+  padding: 12px;
+  background: ${(props) => props.theme.gradients.stat.row};
+  border-radius: 8px;
+  border: 2px solid ${(props) => props.theme.colors.border.brown};
 `;
 
 const SaveButton = styled.button`
   width: 100%;
-  padding: 12px;
-  background-color: #4a90e2;
-  color: white;
-  border: none;
-  border-radius: 4px;
+  padding: 14px;
+  background: ${(props) => props.theme.gradients.button.gold};
+  color: ${(props) => props.theme.colors.text.black};
+  border: 2px solid ${(props) => props.theme.colors.primary.gold};
+  border-radius: 8px;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.3s ease;
+  box-shadow:
+    0 4px 15px ${(props) => props.theme.colors.shadow.goldLight},
+    inset 0 1px 0 ${(props) => props.theme.colors.shadow.whiteLight};
+  font-family: ${(props) => props.theme.fonts.body};
 
   &:hover:not(:disabled) {
-    background-color: #357abd;
+    background: ${(props) => props.theme.gradients.button.goldHover};
+    box-shadow:
+      0 6px 25px ${(props) => props.theme.colors.shadow.gold},
+      inset 0 1px 0 ${(props) => props.theme.colors.shadow.whiteMedium};
+    transform: translateY(-2px);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
   }
 
   &:disabled {
-    opacity: 0.5;
     cursor: not-allowed;
+    background: ${(props) => props.theme.gradients.button.goldDisabled};
+    border-color: ${(props) => props.theme.colors.border.brown};
+    color: ${(props) => props.theme.colors.text.disabled};
+    opacity: 0.7;
   }
 `;
 
 const Message = styled.div<{ $isError?: boolean }>`
-  margin-top: 16px;
-  padding: 12px;
-  border-radius: 4px;
-  background-color: ${(props) => (props.$isError ? "#fee" : "#efe")};
-  color: ${(props) => (props.$isError ? "#c33" : "#363")};
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 16px;
+  border-radius: 8px;
+  background: ${(props) =>
+    props.$isError
+      ? props.theme.gradients.message.error
+      : props.theme.gradients.message.success};
+  color: ${(props) =>
+    props.$isError
+      ? props.theme.colors.text.red
+      : props.theme.colors.text.green};
+  border: 2px solid
+    ${(props) =>
+      props.$isError
+        ? props.theme.colors.text.darkRed
+        : props.theme.colors.text.darkGreen};
+  text-align: center;
+  font-weight: 600;
+  text-shadow: 0 2px 4px ${(props) => props.theme.colors.shadow.blackLight};
+  box-shadow: 0 4px 15px
+    ${(props) =>
+      props.$isError
+        ? props.theme.colors.shadow.redLight
+        : props.theme.colors.shadow.greenLight};
 `;
 
 interface HeroProfileProps {
   heroId: string;
+  heroName: string;
+  heroImage: string;
   initialProfile: HeroProfileType;
 }
 
-const HeroProfile = ({ heroId, initialProfile }: HeroProfileProps) => {
+const HeroProfile = ({
+  heroId,
+  heroName,
+  heroImage,
+  initialProfile,
+}: HeroProfileProps) => {
   const [profile, setProfile] = useState<HeroProfileType>(initialProfile);
   const [message, setMessage] = useState<{
     text: string;
@@ -157,39 +300,47 @@ const HeroProfile = ({ heroId, initialProfile }: HeroProfileProps) => {
   };
 
   return (
-    <>
-      {STATS.map(({ key, label }) => (
-        <StatRow key={key}>
-          <StatLabel>{label}</StatLabel>
-          <StatControls>
-            <StatButton
-              onClick={() => handleDecrement(key)}
-              disabled={profile[key] <= 0}
-            >
-              -
-            </StatButton>
-            <StatValue>{profile[key]}</StatValue>
-            <StatButton
-              onClick={() => handleIncrement(key)}
-              disabled={pointsRemaining <= 0}
-            >
-              +
-            </StatButton>
-          </StatControls>
-        </StatRow>
-      ))}
+    <ProfileLayout>
+      <StatsSection>
+        <HeroName>{heroName}</HeroName>
+        {STATS.map(({ key, label }) => (
+          <StatRow key={key}>
+            <StatLabel>{label}</StatLabel>
+            <StatControls>
+              <StatButton
+                onClick={() => handleDecrement(key)}
+                disabled={profile[key] <= 0}
+              >
+                -
+              </StatButton>
+              <StatValue>{profile[key]}</StatValue>
+              <StatButton
+                onClick={() => handleIncrement(key)}
+                disabled={pointsRemaining <= 0}
+              >
+                +
+              </StatButton>
+            </StatControls>
+          </StatRow>
+        ))}
+      </StatsSection>
 
-      <PointsRemaining>剩餘點數: {pointsRemaining}</PointsRemaining>
-
-      <SaveButton
-        onClick={handleSave}
-        disabled={updateMutation.isPending || currentTotal !== initialTotal}
-      >
-        {updateMutation.isPending ? "儲存中..." : "儲存"}
-      </SaveButton>
-
-      {message && <Message $isError={message.isError}>{message.text}</Message>}
-    </>
+      <HeroInfoSection>
+        <HeroImage src={heroImage} alt={heroName} />
+        <ActionSection>
+          <PointsRemaining>剩餘點數: {pointsRemaining}</PointsRemaining>
+          <SaveButton
+            onClick={handleSave}
+            disabled={updateMutation.isPending || currentTotal !== initialTotal}
+          >
+            {updateMutation.isPending ? "儲存中..." : "儲存"}
+          </SaveButton>
+        </ActionSection>
+        {message && (
+          <Message $isError={message.isError}>{message.text}</Message>
+        )}
+      </HeroInfoSection>
+    </ProfileLayout>
   );
 };
 

@@ -9,6 +9,8 @@ const Container = styled.div`
   align-items: center;
   padding: 60px 20px;
   margin: 0 auto;
+  min-height: 100vh;
+  background: ${(props) => props.theme.gradients.background.radialCenter};
 `;
 
 const HeroesLayout = () => {

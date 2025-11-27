@@ -6,9 +6,10 @@ import HeroCard from "./HeroCard";
 const ListContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
+  width: 100%;
   justify-content: center;
   gap: 20px;
-  margin-bottom: 40px;
+  padding: 20px;
 `;
 
 interface HeroListProps {
