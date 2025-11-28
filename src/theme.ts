@@ -81,9 +81,9 @@ export const theme = {
     },
     message: {
       error:
-        "linear-gradient(135deg, rgba(139, 0, 0, 0.2), rgba(100, 0, 0, 0.1))",
+        "linear-gradient(135deg, rgba(139, 0, 0, 0.7), rgba(100, 0, 0, 0.6))",
       success:
-        "linear-gradient(135deg, rgba(0, 100, 0, 0.2), rgba(0, 80, 0, 0.1))",
+        "linear-gradient(135deg, rgba(0, 100, 0, 0.6), rgba(0, 80, 0, 0.5))",
     },
   },
   fonts: {

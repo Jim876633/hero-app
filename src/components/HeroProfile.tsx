@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { toast } from "react-toastify";
 import styled from "styled-components";
 import { STATS } from "../constant";
 import { useUpdateHeroProfile } from "../hooks/useHeroProfile";
@@ -195,35 +196,6 @@ const SaveButton = styled.button`
   }
 `;
 
-const Message = styled.div<{ $isError?: boolean }>`
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  padding: 16px;
-  border-radius: 8px;
-  background: ${(props) =>
-    props.$isError
-      ? props.theme.gradients.message.error
-      : props.theme.gradients.message.success};
-  color: ${(props) =>
-    props.$isError
-      ? props.theme.colors.text.red
-      : props.theme.colors.text.green};
-  border: 2px solid
-    ${(props) =>
-      props.$isError
-        ? props.theme.colors.text.darkRed
-        : props.theme.colors.text.darkGreen};
-  text-align: center;
-  font-weight: 600;
-  text-shadow: 0 2px 4px ${(props) => props.theme.colors.shadow.blackLight};
-  box-shadow: 0 4px 15px
-    ${(props) =>
-      props.$isError
-        ? props.theme.colors.shadow.redLight
-        : props.theme.colors.shadow.greenLight};
-`;
-
 interface HeroProfileProps {
   heroId: string;
   heroName: string;
@@ -238,10 +210,6 @@ const HeroProfile = ({
   initialProfile,
 }: HeroProfileProps) => {
   const [profile, setProfile] = useState<HeroProfileType>(initialProfile);
-  const [message, setMessage] = useState<{
-    text: string;
-    isError: boolean;
-  } | null>(null);
 
   const updateMutation = useUpdateHeroProfile(heroId);
 
@@ -262,7 +230,6 @@ const HeroProfile = ({
         ...prev,
         [stat]: prev[stat] + 1,
       }));
-      setMessage(null);
     }
   };
 
@@ -272,31 +239,21 @@ const HeroProfile = ({
         ...prev,
         [stat]: prev[stat] - 1,
       }));
-      setMessage(null);
     }
   };
 
   const handleSave = () => {
     if (currentTotal !== initialTotal) {
-      setMessage({
-        text: "總能力值必須與原始值相同",
-        isError: true,
-      });
+      toast.error("總能力值必須與原始值相同");
       return;
     }
 
     updateMutation.mutate(profile, {
       onSuccess: () => {
-        setMessage({
-          text: "儲存成功！",
-          isError: false,
-        });
+        toast.success("儲存成功！");
       },
       onError: (error) => {
-        setMessage({
-          text: error instanceof Error ? error.message : "儲存失敗",
-          isError: true,
-        });
+        toast.error(error instanceof Error ? error.message : "儲存失敗");
       },
     });
   };
@@ -340,9 +297,6 @@ const HeroProfile = ({
             {updateMutation.isPending ? "儲存中..." : "儲存"}
           </SaveButton>
         </ActionSection>
-        {message && (
-          <Message $isError={message.isError}>{message.text}</Message>
-        )}
       </HeroInfoSection>
     </ProfileLayout>
   );
