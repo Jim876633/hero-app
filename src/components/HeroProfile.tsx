@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { STATS } from "../constant";
 import { useUpdateHeroProfile } from "../hooks/useHeroProfile";
 import type { HeroProfileType } from "../types/hero";
+import OptimizedImage from "./OptimizedImage";
 
 const ProfileLayout = styled.div`
   display: flex;
@@ -33,15 +34,16 @@ const HeroInfoSection = styled.div`
   gap: 20px;
 `;
 
-const HeroImage = styled.img`
+const ImageContainer = styled.div`
   width: 100%;
   height: 200px;
-  border-radius: 12px;
+`;
+
+const HeroImage = styled(OptimizedImage)`
   border: 3px solid ${(props) => props.theme.colors.primary.gold};
   box-shadow:
     0 8px 30px ${(props) => props.theme.colors.shadow.goldLight},
     inset 0 1px 0 ${(props) => props.theme.colors.shadow.goldInsetLight};
-  object-fit: cover;
 `;
 
 const HeroName = styled.h3`
@@ -326,7 +328,9 @@ const HeroProfile = ({
       </StatsSection>
 
       <HeroInfoSection>
-        <HeroImage src={heroImage} alt={heroName} />
+        <ImageContainer>
+          <HeroImage src={heroImage} alt={heroName} />
+        </ImageContainer>
         <ActionSection>
           <PointsRemaining>剩餘點數: {pointsRemaining}</PointsRemaining>
           <SaveButton

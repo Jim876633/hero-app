@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import type { HeroType } from "../types/hero";
+import OptimizedImage from "./OptimizedImage";
 
 const Card = styled(Link)<{ $isSelected: boolean }>`
   display: flex;
@@ -46,16 +47,13 @@ const Card = styled(Link)<{ $isSelected: boolean }>`
   }
 `;
 
-const HeroImage = styled.img`
+const ImageContainer = styled.div`
   width: 110px;
   height: 110px;
-  object-fit: cover;
-  border-radius: 8px;
   margin-bottom: 12px;
-  border: 2px solid ${(props) => props.theme.colors.border.brown};
-  box-shadow: 0 4px 15px ${(props) => props.theme.colors.shadow.blackMedium};
-  transition: all 0.3s ease;
+`;
 
+const HeroImage = styled(OptimizedImage)`
   ${Card}:hover & {
     border-color: ${(props) => props.theme.colors.primary.gold};
     box-shadow: 0 4px 20px ${(props) => props.theme.colors.shadow.goldDark};
@@ -81,7 +79,9 @@ interface HeroCardProps {
 const HeroCard = ({ hero, isSelected }: HeroCardProps) => {
   return (
     <Card to={`/heroes/${hero.id}`} $isSelected={isSelected}>
-      <HeroImage src={hero.image} alt={hero.name} />
+      <ImageContainer>
+        <HeroImage src={hero.image} alt={hero.name} />
+      </ImageContainer>
       <HeroName>{hero.name}</HeroName>
     </Card>
   );
