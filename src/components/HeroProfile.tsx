@@ -257,7 +257,7 @@ const HeroProfile = ({
         toast.success("儲存成功！");
       },
       onError: (error) => {
-        toast.error(error instanceof Error ? error.message : "儲存失敗");
+        toast.error(error.message ?? "儲存失敗");
       },
     });
   };

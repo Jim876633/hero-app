@@ -1,5 +1,6 @@
 import { Outlet } from "react-router-dom";
 import styled from "styled-components";
+import ErrorMessage from "../components/ErrorMessage";
 import HeroList from "../components/HeroList";
 import HeroListSkeleton from "../components/Skeleton/HeroListSkeleton";
 import { useHeroes } from "../hooks/useHeroes";
@@ -31,9 +32,9 @@ const HeroesLayout = () => {
         {isLoading ? (
           <HeroListSkeleton />
         ) : error ? (
-          "Error loading heroes."
+          <ErrorMessage message={error.message} type="error" />
         ) : !heroes ? (
-          "No heroes found"
+          <ErrorMessage message="找不到英雄資料" type="info" />
         ) : (
           <HeroList heroes={heroes} />
         )}

@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import ErrorMessage from "../components/ErrorMessage";
 import HeroProfile from "../components/HeroProfile";
 import HeroProfileSkeleton from "../components/Skeleton/HeroProfileSkeleton";
 import { useHeroes } from "../hooks/useHeroes";
@@ -86,9 +87,9 @@ const HeroProfilePage = () => {
       {isLoading ? (
         <HeroProfileSkeleton />
       ) : error ? (
-        "Error loading profile."
+        <ErrorMessage message={error.message} type="error" />
       ) : !profile || !heroId || !hero ? (
-        "Profile not found."
+        <ErrorMessage message="找不到英雄資料" type="info" />
       ) : (
         <HeroProfile
           key={heroId}
