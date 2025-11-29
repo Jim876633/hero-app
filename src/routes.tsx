@@ -1,5 +1,6 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import HeroesLayout from "./pages/HeroesLayout";
+import HeroListPage from "./pages/HeroListPage";
 import HeroProfilePage from "./pages/HeroProfilePage";
 
 export const router = createBrowserRouter([
@@ -9,7 +10,7 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        Component: null,
+        Component: HeroListPage,
       },
       {
         path: ":heroId",

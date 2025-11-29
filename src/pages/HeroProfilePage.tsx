@@ -22,26 +22,19 @@ const HeroProfilePage = () => {
   const { heroId } = useParams<{ heroId: string }>();
   const { data: profile, isLoading, error } = useHeroProfile(heroId);
 
-  if (isLoading) {
-    return <div>Loading profile...</div>;
-  }
-
-  if (error) {
-    return (
-      <div>
-        Error: {error instanceof Error ? error.message : "Unknown error"}
-      </div>
-    );
-  }
-
-  if (!profile || !heroId) {
-    return <div>Profile not found</div>;
-  }
-
   return (
     <ProfileContainer>
+      <title>Hero Profile Page</title>
       <ProfileTitle>Hero Profile</ProfileTitle>
-      <HeroProfile key={heroId} heroId={heroId} initialProfile={profile} />
+      {isLoading ? (
+        "Loading profile..."
+      ) : error ? (
+        "Error loading profile."
+      ) : !profile || !heroId ? (
+        "Profile not found."
+      ) : (
+        <HeroProfile key={heroId} heroId={heroId} initialProfile={profile} />
+      )}
     </ProfileContainer>
   );
 };

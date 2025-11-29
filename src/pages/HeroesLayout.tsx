@@ -14,26 +14,20 @@ const Container = styled.div`
 const HeroesLayout = () => {
   const { data: heroes, isLoading, error } = useHeroes();
 
-  if (isLoading) {
-    return <Container>Loading...</Container>;
-  }
-
-  if (error) {
-    return (
-      <Container>
-        Error: {error instanceof Error ? error.message : "Unknown error"}
-      </Container>
-    );
-  }
-
-  if (!heroes) {
-    return <Container>No heroes found</Container>;
-  }
-
   return (
     <Container>
-      <HeroList heroes={heroes} />
-      <Outlet />
+      {isLoading ? (
+        "Loading..."
+      ) : error ? (
+        "Error loading heroes."
+      ) : !heroes ? (
+        "No heroes found"
+      ) : (
+        <>
+          <HeroList heroes={heroes} />
+          <Outlet />
+        </>
+      )}
     </Container>
   );
 };
