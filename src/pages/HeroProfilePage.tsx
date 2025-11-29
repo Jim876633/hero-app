@@ -1,12 +1,15 @@
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import HeroProfile from "../components/HeroProfile";
+import HeroProfileSkeleton from "../components/Skeleton/HeroProfileSkeleton";
 import { useHeroes } from "../hooks/useHeroes";
 import { useHeroProfile } from "../hooks/useHeroProfile";
 
 const ProfileContainer = styled.div`
-  width: 100%;
-  max-width: 700px;
+  width: min(700px, 100%);
+  min-height: 550px;
+  display: flex;
+  flex-direction: column;
   border: 3px solid ${(props) => props.theme.colors.border.brown};
   border-radius: 16px;
   padding: 40px;
@@ -81,7 +84,7 @@ const HeroProfilePage = () => {
       <title>Hero Profile Page</title>
       <ProfileTitle>Hero Profile</ProfileTitle>
       {isLoading ? (
-        "Loading profile..."
+        <HeroProfileSkeleton />
       ) : error ? (
         "Error loading profile."
       ) : !profile || !heroId || !hero ? (

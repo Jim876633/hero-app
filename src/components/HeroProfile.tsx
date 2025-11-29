@@ -7,10 +7,11 @@ import type { HeroProfileType } from "../types/hero";
 import OptimizedImage from "./OptimizedImage";
 
 const ProfileLayout = styled.div`
+  flex: 1;
   display: flex;
   gap: 30px;
 
-  @media (max-width: 768px) {
+  @media (max-width: 576px) {
     flex-direction: column;
     align-items: center;
   }
@@ -37,7 +38,10 @@ const HeroInfoSection = styled.div`
 
 const ImageContainer = styled.div`
   width: 100%;
-  height: 200px;
+  height: 100%;
+  @media (max-width: 576px) {
+    height: 250px;
+  }
 `;
 
 const HeroImage = styled(OptimizedImage)`

@@ -1,16 +1,6 @@
 import { useParams } from "react-router-dom";
-import styled from "styled-components";
 import type { HeroType } from "../types/hero";
 import HeroCard from "./HeroCard";
-
-const ListContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  width: 100%;
-  justify-content: center;
-  gap: 20px;
-  padding: 20px;
-`;
 
 interface HeroListProps {
   heroes: HeroType[];
@@ -19,13 +9,9 @@ interface HeroListProps {
 const HeroList = ({ heroes }: HeroListProps) => {
   const { heroId } = useParams<{ heroId: string }>();
 
-  return (
-    <ListContainer>
-      {heroes.map((hero) => (
-        <HeroCard key={hero.id} hero={hero} isSelected={heroId === hero.id} />
-      ))}
-    </ListContainer>
-  );
+  return heroes.map((hero) => (
+    <HeroCard key={hero.id} hero={hero} isSelected={heroId === hero.id} />
+  ));
 };
 
 export default HeroList;

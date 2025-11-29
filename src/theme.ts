@@ -85,6 +85,10 @@ export const theme = {
       success:
         "linear-gradient(135deg, rgba(0, 100, 0, 0.6), rgba(0, 80, 0, 0.5))",
     },
+    skeleton: {
+      shimmer:
+        "linear-gradient(90deg, rgba(42, 24, 16, 0.6) 25%, rgba(74, 53, 32, 0.4) 50%, rgba(42, 24, 16, 0.6) 75%)",
+    },
   },
   fonts: {
     primary: "'Cinzel', 'Trajan Pro', Georgia, serif",
